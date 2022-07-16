@@ -3,7 +3,7 @@
 <head>
     <title>LesaService</title>
     <meta charset="UTF-8">
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <meta name="keywords" content="LesaService, строительные леса, вышки">
     <meta name="description" content="Продажа строительных лесов и вышек с помощью удобного инструмента, который поможет
 подобрать параметры вашего заказа">

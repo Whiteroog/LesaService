@@ -1,4 +1,4 @@
 <?php
 require 'components/header.php';
-print("Товары");
+require 'database.php';
 require 'components/footer.php';
