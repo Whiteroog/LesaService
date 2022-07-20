@@ -1,39 +1,39 @@
 body {
+    margin: 80px;
+    margin-right: 150px;
+    margin-left: 150px;
+
     font-family: sans-serif;
     font-size: x-large;
     text-align: justify;
+
     line-height: 130%;
+
+    background-color: beige;
 }
 
 nav {
-    margin: 50px;
+    padding: 50px;
     font-size: xxx-large;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 main {
-    padding-left: 50px;
-    padding-right: 50px;
+    display: grid;
+    row-gap: 20px;
 }
 
-footer {
-    margin-top: 50px;
-}
-
-section {
-    margin-top: 100px;
-    margin-bottom: 100px;
-}
-
-figure {
+figure, h1, nav {
     text-align: center;
 }
 
 figcaption {
     font-weight: bold;
+    font-family: sans-serif;
 }
 
 h1 {
-    text-align: center;
     text-decoration: underline;
 }
 
@@ -43,4 +43,66 @@ p, li{
 
 .words-header {
     text-transform: uppercase;
+}
+
+.advantage-list {
+    list-style-type: none;
+}
+
+.two-columns-equally {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.color-black-background-yellow {
+    color: black;
+    background-color: gold;
+}
+
+.color-white-background-blue {
+    color: white;
+    background-color: #2dafff;
+}
+
+a {
+    margin: auto;
+    padding: 15px;
+
+    outline: none;
+    text-decoration: none;
+
+    display: inline-block;
+
+    text-align: center;
+
+    color: black;
+}
+
+a:link, a:visited, a:focus {
+    background: yellow;
+}
+
+a:hover {
+    background: orange;
+}
+
+header, nav, main {
+    background-color: white;
+}
+
+header, main, footer, .two-columns-equally {
+    padding: 25px;
 }
