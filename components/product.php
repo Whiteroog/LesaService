@@ -6,12 +6,12 @@
     <div>
         <?= $product['title']?><br><br>
         параметры 1 секции<br>
-        ширина: <?= $product['width']?> м<br>
-        длина: <?= $product['length']?> м<br>
-        высота: <?= $product['height']?> м<br>
+        ширина: <?= $product['width'] ?? "нет значения" ?> м<br>
+        длина: <?= $product['length'] ?? "нет значения" ?> м<br>
+        высота: <?= $product['height'] ?? "нет значения" ?> м<br>
     </div>
     <div>
-        от <?= $product['price']?> р.<br>
-        <a href="">Купить</a><br>
+        от <?= $product['price'] ?? "нет значения" ?> р.<br>
+        <a >Купить</a><br>
     </div>
 </li>
