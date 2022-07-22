@@ -3,7 +3,7 @@
 <head>
     <title>LesaService</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/LesaServiceOnPHP/style.css">
     <meta name="keywords" content="LesaService, строительные леса, вышки">
     <meta name="description" content="Продажа строительных лесов и вышек с помощью удобного инструмента, который поможет
 подобрать параметры вашего заказа">
@@ -32,6 +32,6 @@
     </div>
 </header>
 <nav>
-    <a href="index.php">Главная</a>
-    <a href="store.php">Магазин</a>
+    <a href="/LesaServiceOnPHP/index.php">Главная</a>
+    <a href="/LesaServiceOnPHP/store.php">Магазин</a>
 </nav>
