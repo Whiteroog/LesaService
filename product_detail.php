@@ -13,7 +13,7 @@ $product_query = mysqli_query($link, $sql_get_product_build_constr);
 $parameters_query = mysqli_query($link, $sql_get_product_parameters);
 $product_detail_query = mysqli_query($link, $sql_get_product_build_constr_detail);
 
-$product = mysqli_fetch_array($product_query, MYSQLI_ASSOC);
+$product = mysqli_fetch_array($product_query);
 $parameters = mysqli_fetch_all($parameters_query, MYSQLI_ASSOC);
 $product_detail = mysqli_fetch_all($product_detail_query, MYSQLI_ASSOC);
 
@@ -35,11 +35,6 @@ foreach ($parameters as $parameter) {
             break;
     }
 }
-
-$frame_with_ladder;
-$pathway_frame;
-$flooring;
-$other_details;
 
 foreach ($product_detail as $detail) {
     switch ($detail['part_type']) {
