@@ -16,7 +16,7 @@ nav {
     padding: 50px;
     font-size: x-large;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 100px;
 }
 
 main {

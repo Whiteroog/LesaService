@@ -30,6 +30,7 @@ CREATE TABLE `orders` (
   `product_id` int unsigned NOT NULL,
   `payment_status` enum('Ожидайте','Готово','Забран','Отменен') NOT NULL,
   `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `amount` int unsigned NOT NULL DEFAULT '1',
   `total_price` float unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ProductFromProducts_idx` (`product_id`),
@@ -45,7 +46,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,'User1',1,'Ожидайте','2022-07-22 20:23:59',101),(2,'User2',2,'Ожидайте','2022-07-22 20:23:59',111),(3,'User1',3,'Ожидайте','2022-07-22 20:23:59',135),(4,'User2',1,'Ожидайте','2022-07-22 20:23:59',101);
+INSERT INTO `orders` VALUES (1,'User1',1,'Ожидайте','2022-07-22 20:23:59',1,101),(2,'User2',2,'Ожидайте','2022-07-22 20:23:59',1,111),(3,'User1',3,'Ожидайте','2022-07-22 20:23:59',1,135),(4,'User2',1,'Ожидайте','2022-07-22 20:23:59',1,101);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +60,7 @@ DROP TABLE IF EXISTS `parts_in_orders`;
 CREATE TABLE `parts_in_orders` (
   `order_id` int unsigned NOT NULL,
   `part_id` int unsigned NOT NULL,
-  `number` int unsigned NOT NULL,
+  `amount` int unsigned NOT NULL DEFAULT '1',
   UNIQUE KEY `order_id_and_part_id_UNIQUE` (`order_id`,`part_id`),
   CONSTRAINT `fk_orders_to_parts_in_orders` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT `fk_products_to_parts_in_orders` FOREIGN KEY (`order_id`) REFERENCES `products` (`id`)
@@ -86,7 +87,7 @@ DROP TABLE IF EXISTS `parts_in_products`;
 CREATE TABLE `parts_in_products` (
   `product_id` int unsigned NOT NULL,
   `part_id` int unsigned NOT NULL,
-  `number` int unsigned NOT NULL DEFAULT '0',
+  `amount` int unsigned NOT NULL DEFAULT '1',
   UNIQUE KEY `product_id_and_part_id_UNIQUE` (`product_id`,`part_id`),
   KEY `fk_products_to_parts_in_products_part` (`part_id`),
   CONSTRAINT `fk_products_to_parts_in_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
@@ -184,7 +185,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('User1','123','User1@gmail.com',NULL),('User2','321',NULL,'7925765825004');
+INSERT INTO `users` VALUES ('User1','$2y$10$9lVk98MPrbSR4KLzMMTAQ.vA4M/yvMi.6I7zgbf.anFZfJX9FTfXu','User1@gmail.com',NULL),('User2','$2y$10$GbP.l5AZf2me7LTVfGh5qukbrH7khotmVhLk0HOZJdpAU94j51/pK',NULL,'7925765825004');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,6 +204,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `category`,
  1 AS `product_type`,
  1 AS `order_date`,
+ 1 AS `amount`,
  1 AS `total_price`,
  1 AS `image_url`*/;
 SET character_set_client = @saved_cs_client;
@@ -222,8 +224,9 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `part_category`,
  1 AS `part_type`,
  1 AS `price`,
- 1 AS `number`,
- 1 AS `price_package_parts`*/;
+ 1 AS `amount`,
+ 1 AS `price_package_parts`,
+ 1 AS `price_package_parts_by_amount_orders`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -241,7 +244,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `part_category`,
  1 AS `part_type`,
  1 AS `price`,
- 1 AS `number`,
+ 1 AS `amount`,
  1 AS `price_package_parts`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -276,10 +279,10 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `calc_order_total_price`(target_id in
     DETERMINISTIC
 BEGIN
 
-RETURN (select sum(price * number)
-			from products, parts_in_orders 
-				where products.id = parts_in_orders.part_id and 
-					parts_in_orders.order_id = target_id
+RETURN (select sum(price * amount) * (select amount from orders where orders.id = target_id)
+			from parts_in_orders, products
+				where parts_in_orders.order_id = target_id and 
+					products.id = parts_in_orders.part_id
 );
 END ;;
 DELIMITER ;
@@ -301,7 +304,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `calc_product_total_price`(target_id 
     DETERMINISTIC
 BEGIN
 
-RETURN (select sum(price * number)
+RETURN (select sum(price * amount)
 			from products, parts_in_products
 				where products.id = parts_in_products.part_id and 
 					parts_in_products.product_id = target_id
@@ -326,7 +329,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_orders` AS select `orders`.`id` AS `id`,`orders`.`login` AS `login`,`products`.`title` AS `title`,`products`.`category` AS `category`,`products`.`product_type` AS `product_type`,`orders`.`order_date` AS `order_date`,`orders`.`total_price` AS `total_price`,`products`.`image_url` AS `image_url` from (`orders` join `products` on((`orders`.`product_id` = `products`.`id`))) */;
+/*!50001 VIEW `view_orders` AS select `orders`.`id` AS `id`,`orders`.`login` AS `login`,`products`.`title` AS `title`,`products`.`category` AS `category`,`products`.`product_type` AS `product_type`,`orders`.`order_date` AS `order_date`,`orders`.`amount` AS `amount`,`orders`.`total_price` AS `total_price`,`products`.`image_url` AS `image_url` from (`orders` join `products` on((`orders`.`product_id` = `products`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -344,7 +347,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_orders_build_constr_detail` AS select `orders`.`id` AS `order_id`,`products`.`id` AS `part_id`,`products`.`title` AS `part_title`,`products`.`category` AS `part_category`,`products`.`product_type` AS `part_type`,`products`.`price` AS `price`,`parts_in_orders`.`number` AS `number`,(select (`products`.`price` * `parts_in_orders`.`number`)) AS `price_package_parts` from ((`parts_in_orders` join `orders` on((`parts_in_orders`.`order_id` = `orders`.`id`))) join `products` on((`parts_in_orders`.`part_id` = `products`.`id`))) */;
+/*!50001 VIEW `view_orders_build_constr_detail` AS select `orders`.`id` AS `order_id`,`products`.`id` AS `part_id`,`products`.`title` AS `part_title`,`products`.`category` AS `part_category`,`products`.`product_type` AS `part_type`,`products`.`price` AS `price`,`parts_in_orders`.`amount` AS `amount`,(select (`products`.`price` * `parts_in_orders`.`amount`)) AS `price_package_parts`,(select ((`products`.`price` * `parts_in_orders`.`amount`) * `orders`.`amount`)) AS `price_package_parts_by_amount_orders` from ((`parts_in_orders` join `orders` on((`parts_in_orders`.`order_id` = `orders`.`id`))) join `products` on((`parts_in_orders`.`part_id` = `products`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -362,7 +365,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_products_build_constr_detail` AS select (select `products`.`id` from `products` where (`parts_in_products`.`product_id` = `products`.`id`)) AS `product_id`,`products`.`id` AS `part_id`,`products`.`title` AS `part_title`,`products`.`category` AS `part_category`,`products`.`product_type` AS `part_type`,`products`.`price` AS `price`,`parts_in_products`.`number` AS `number`,(select (`products`.`price` * `parts_in_products`.`number`)) AS `price_package_parts` from (`products` join `parts_in_products` on((`products`.`id` = `parts_in_products`.`part_id`))) */;
+/*!50001 VIEW `view_products_build_constr_detail` AS select (select `products`.`id` from `products` where (`parts_in_products`.`product_id` = `products`.`id`)) AS `product_id`,`products`.`id` AS `part_id`,`products`.`title` AS `part_title`,`products`.`category` AS `part_category`,`products`.`product_type` AS `part_type`,`products`.`price` AS `price`,`parts_in_products`.`amount` AS `amount`,(select (`products`.`price` * `parts_in_products`.`amount`)) AS `price_package_parts` from (`products` join `parts_in_products` on((`products`.`id` = `parts_in_products`.`part_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -394,4 +397,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-23  1:11:21
+-- Dump completed on 2022-07-23 22:31:30

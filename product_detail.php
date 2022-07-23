@@ -41,25 +41,25 @@ foreach ($product_detail as $detail) {
         case "Рама с лестницей":
             $frame_with_ladder = ['part_id' => $detail['part_id'],
                 'part_title' => $detail['part_title'],
-                'number' => $detail['number'],
+                'amount' => $detail['amount'],
                 'price' => $detail['price']];
             break;
         case "Рама проходная":
             $pathway_frame = ['part_id' => $detail['part_id'],
                 'part_title' => $detail['part_title'],
-                'number' => $detail['number'],
+                'amount' => $detail['amount'],
                 'price' => $detail['price']];
             break;
         case "Настил":
             $flooring = ['part_id' => $detail['part_id'],
                 'part_title' => $detail['part_title'],
-                'number' => $detail['number'],
+                'amount' => $detail['amount'],
                 'price' => $detail['price']];
             break;
         default:
             $other_details[] = ['part_id' => $detail['part_id'],
                 'part_title' => $detail['part_title'],
-                'number' => $detail['number'],
+                'amount' => $detail['amount'],
                 'price' => $detail['price']];
     }
 }
@@ -78,15 +78,15 @@ foreach ($product_detail as $detail) {
     <br>
     Настраиваемая комплектация<br>
     Ввести:<br>
-    <?= $frame_with_ladder['part_title'] ?? "Рама с лестницей" ?>: <?= $frame_with_ladder['number'] ?? "нет значения" ?> шт.<br>
-    <?= $pathway_frame['part_title'] ?? "Рама проходная" ?>: <?= $pathway_frame['number'] ?? "нет значения" ?> шт.<br>
-    <?= $flooring['part_title'] ?? "Настил" ?>: <?= $flooring['number'] ?? "нет значения" ?> шт.<br>
+    <?= $frame_with_ladder['part_title'] ?? "Рама с лестницей" ?>: <?= $frame_with_ladder['amount'] ?? "нет значения" ?> шт.<br>
+    <?= $pathway_frame['part_title'] ?? "Рама проходная" ?>: <?= $pathway_frame['amount'] ?? "нет значения" ?> шт.<br>
+    <?= $flooring['part_title'] ?? "Настил" ?>: <?= $flooring['amount'] ?? "нет значения" ?> шт.<br>
     <br>
     Оставшая комплектация<br>
     Нельзя вводить:<br>
     <?php if (isset($other_details)): ?>
     <?php foreach ($other_details as $detail): ?>
-    <?= $detail['part_title'] ?? "нет значения" ?>: <?= $detail['number'] ?? "нет значения" ?> шт.<br>
+    <?= $detail['part_title'] ?? "нет значения" ?>: <?= $detail['amount'] ?? "нет значения" ?> шт.<br>
     <?php endforeach; ?>
     <?php endif; ?>
     <br>

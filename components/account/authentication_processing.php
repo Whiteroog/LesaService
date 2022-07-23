@@ -1,6 +1,4 @@
 <?php
-require 'components/admin/admin.php';
-
 if (!isset($_POST)) {
     require 'authentication.php';
     return;
@@ -20,8 +18,8 @@ if (!isset($user) || !password_verify($password, $user['password'])) {
     return;
 }
 
+$_SESSION = [];
 setcookie("login", $login, strtotime("+7 days"));
-session_start();
-$_SESSION["login"] = $login;
-$_SESSION["status"] = admin::name_verify($login) ? "admin" : "user";
-require 'store.php';
+
+require 'authorization.php';
+return; // куда-то вывести
