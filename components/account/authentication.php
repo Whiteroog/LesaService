@@ -1,14 +1,17 @@
 <?php
-$action = $_GET['action'];
+$action = "";
+if(isset($_GET['action'])) {
+    $action = $_GET['action'];
+}
 
-if($action === 'sign out') {
+if($action === 'sign-out') {
     $_SESSION = [];
-    $_COOKIE = [];
-    return; // куда-то вывести
+    setcookie("login", "", time() - 3600, '/');
+    header("Location: /LesaServiceOnPHP/index.php");
 }
 ?>
 
-<form name="feedback" method="POST" action="/LesaServiceOnPHP/authentication_processing.php">
+<form name="feedback" method="POST" action="/LesaServiceOnPHP/components/account/authentication_processing.php">
     <label>Login: <input type="text" name="login"></label><br>
     <br>
     <label>Password: <input type="text" name="password"></label><br>

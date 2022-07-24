@@ -1,5 +1,5 @@
 <?php
-require 'components/admin/admin.php';
+require 'D:/GitHub/LesaServiceOnPHP/components/admin/admin.php';
 
 if(isset($_SESSION["login"])) {
     return;

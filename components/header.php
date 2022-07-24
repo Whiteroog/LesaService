@@ -38,11 +38,11 @@
     require 'components/account/authorization.php';
     ?>
     <?php if(!isset($_SESSION["login"])): ?>
-    <a href="components/account/authentication.php/?action=sign in">Войти</a>
+    <a href="/LesaServiceOnPHP/components/account/authentication.php/?action=sign-in">Войти</a>
     <?php else: ?>
     <div>
         <?= $_SESSION["login"] ?><br>
-        <a href="components/account/authentication.php/?action=sign out">Выйти</a>
+        <a href="/LesaServiceOnPHP/components/account/authentication.php/?action=sign-out">Выйти</a>
     </div>
     <?php endif ?>
 </nav>

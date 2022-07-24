@@ -1,6 +1,6 @@
 <?php
 require 'components/header.php';
-require 'database.php';
+require 'database/database.php';
 
 $sql_get_products_build_constr = 'select * from products where category = "Конструкция"';
 $products_query = mysqli_query($link, $sql_get_products_build_constr);

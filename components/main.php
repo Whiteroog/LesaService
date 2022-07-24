@@ -41,7 +41,7 @@
         <ul class="advantage-list two-columns-equally">
             <li>
                 <figure>
-                    <img src="/img/icon/ok.png" alt="надежность изготовления">
+                    <img src="img/icon/ok.png" alt="надежность изготовления">
                     <figcaption>Надежность</figcaption>
                 </figure>
                 <p>Несмотря на видимую легкость конструкции, она очень надежна. Устойчивость и достаточно большая
@@ -51,7 +51,7 @@
             </li>
             <li>
                 <figure>
-                    <img src="/img/icon/tools.png" alt="простота в работе">
+                    <img src="img/icon/tools.png" alt="простота в работе">
                     <figcaption>Удобство</figcaption>
                 </figure>
                 <p>Использование таких конструкций обеспечит вашим сотрудникам весьма комфортные условия работы. Не боясь за
@@ -60,7 +60,7 @@
             </li>
             <li>
                 <figure>
-                    <img src="/img/icon/timing.png" alt="гарантированное качество">
+                    <img src="img/icon/timing.png" alt="гарантированное качество">
                     <figcaption>Долговечность</figcaption>
                 </figure>
                 <p>Благодаря отличному качеству используемых материалов и сборки строительные леса и вышки туры нашего
@@ -70,7 +70,7 @@
             </li>
             <li>
                 <figure>
-                    <img src="/img/icon/delivery.png" alt="гарантированное качество">
+                    <img src="img/icon/delivery.png" alt="гарантированное качество">
                     <figcaption>Транспортабельность</figcaption>
                 </figure>
                 <p>Собрать и разобрать такую конструкцию очень легко. Для этого не нужна специальная техника и особые

@@ -1,6 +1,6 @@
 <?php
-$params = $_GET;
 $product_id = $product['id'];
+
 $params['product_id'] = $product_id;
 $url = "product_detail.php/?".http_build_query($params);
 ?>
